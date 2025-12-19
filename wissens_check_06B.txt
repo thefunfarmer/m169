@@ -1,0 +1,13 @@
+Wie funktioniert remote Codeversionierung mit Git?
+
+Git unterscheidet zwischen einem lokalen Repository und einem entfernten (remote) Repository, zum Beispiel auf GitHub.
+
+Änderungen werden zuerst lokal versioniert, indem sie mit git add zur Staging Area hinzugefügt und mit git commit als Version gespeichert werden.
+
+Das entfernte Repository wird über eine Remote-Verbindung (z. B. origin) eingebunden.
+
+Mit git push werden lokale Commits bewusst in das entfernte Repository hochgeladen und dort gespeichert.
+
+Mit git pull können Änderungen aus dem entfernten Repository wieder in das lokale Repository übernommen werden.
+
+Remote Codeversionierung dient als zentrale Austausch- und Sicherungsstelle für den Code.
