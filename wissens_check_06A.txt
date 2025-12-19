@@ -1,0 +1,23 @@
+Wozu Codeversionierung?
+
+Sie speichert Änderungen am Code nachvollziehbar in einer Historie (wer, was, wann, warum).
+
+Man kann jederzeit zu früheren Versionen zurückkehren, falls etwas kaputtgeht.
+
+Zusammenarbeit wird sicherer: Änderungen können parallel gemacht und später zusammengeführt werden.
+
+Fehleranalyse wird einfacher, weil man genau sieht, welche Änderung ein Problem eingeführt hat.
+
+
+
+Wie funktioniert lokale Codeversionierung mit Git?
+
+Git verwaltet im Ordner .git die komplette Historie als lokale Datenbank.
+
+Dateien durchlaufen typischerweise drei Zustände:
+
+1. Working Directory: Dateien werden bearbeitet (z. B. README ändern)
+2. Staging Area: gewollte Änderungen werden vorgemerkt (git add)
+3. Repository (Commits): Änderungen werden als Version gespeichert (git commit)
+
+Mit git status sieht man jederzeit, welche Dateien wo stehen (untracked, staged, modified).
