@@ -1,0 +1,54 @@
+services:
+  lmvidb:
+    image: mysql:8.0
+    container_name: lmvidb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - lmvidb_data:/var/lib/mysql
+    networks:
+      - lmvi_cms_net
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: lmvi-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - lmvidb
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      PMA_PORT: ${PMA_PORT}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+    ports:
+      - "8082:80"
+    networks:
+      - lmvi_cms_net
+
+  joomla:
+    image: joomla:latest
+    container_name: lmvi-joomla
+    restart: unless-stopped
+    depends_on:
+      - lmvidb
+    environment:
+      JOOMLA_DB_HOST: ${JOOMLA_DB_HOST}
+      JOOMLA_DB_USER: ${JOOMLA_DB_USER}
+      JOOMLA_DB_PASSWORD: ${JOOMLA_DB_PASSWORD}
+      JOOMLA_DB_NAME: ${JOOMLA_DB_NAME}
+    ports:
+      - "8200:80"
+    networks:
+      - lmvi_cms_net
+
+volumes:
+  lmvidb_data:
+
+networks:
+  lmvi_cms_net:
+    name: lmvi_cms_net
+    driver: bridge

@@ -1,0 +1,58 @@
+services:
+  wissdb:
+    image: mysql:8.0
+    container_name: wissdb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - wissdb_data:/var/lib/mysql
+    networks:
+      - wiss_cms_net
+    # DBMS soll von aussen nicht erreichbar sein:
+    # Darum KEIN "ports:" hier.
+
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: wiss-phpmyadmin
+    restart: unless-stopped
+    depends_on:
+      - wissdb
+    environment:
+      PMA_HOST: ${PMA_HOST}
+      PMA_PORT: ${PMA_PORT}
+      PMA_USER: ${PMA_USER}
+      PMA_PASSWORD: ${PMA_PASSWORD}
+
+    ports:
+      - "8081:80"
+    networks:
+      - wiss_cms_net
+
+  joomla:
+    image: joomla:latest
+    container_name: wiss-joomla
+    restart: unless-stopped
+    depends_on:
+      - wissdb
+    environment:
+      JOOMLA_DB_HOST: ${JOOMLA_DB_HOST}
+      JOOMLA_DB_USER: ${JOOMLA_DB_USER}
+      JOOMLA_DB_PASSWORD: ${JOOMLA_DB_PASSWORD}
+      JOOMLA_DB_NAME: ${JOOMLA_DB_NAME}
+
+    ports:
+      - "8100:80"
+    networks:
+      - wiss_cms_net
+
+volumes:
+  wissdb_data:
+
+networks:
+  wiss_cms_net:
+    name: wiss_cms_net
+    driver: bridge
