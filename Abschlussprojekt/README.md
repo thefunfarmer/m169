@@ -87,6 +87,54 @@ Hinweis: Repositories werden im Normalfall im Web UI erstellt. Ein Push zum auto
 
 ---
 
+## Quickstart (frischer Clone)
+
+1) Repository klonen und in den Compose Ordner wechseln:
+```bash
+cd Abschlussprojekt/compose
+```
+
+2) Lokale Secrets Datei erstellen (nicht committen):
+```bash
+cp .env.example .env
+```
+Danach `compose/.env` öffnen und mindestens diese Variablen setzen:
+- `GITEA_DB_PASSWORD`
+- `NEXTCLOUD_DB_PASSWORD`
+- `NEXTCLOUD_DB_ROOT_PASSWORD`
+- `MEDIAWIKI_DB_PASSWORD`
+
+3) Stack starten:
+```bash
+docker compose up -d
+docker compose ps
+```
+
+4) Ersteinrichtung im Browser (nur beim ersten Start, da Volumes noch leer sind):
+- **Portainer** öffnen: https://localhost:9443  
+  Beim ersten Aufruf Admin Benutzer und Passwort setzen.
+- **Gitea** öffnen: http://localhost:3000  
+  Setup Wizard ausfüllen (Datenbank Host `gitea-db:5432`, DB Name/User `gitea`, Passwort aus `.env`), danach ersten Benutzer anlegen.
+- **Nextcloud** öffnen: http://localhost:8080  
+  Setup Wizard ausfüllen (Datenbank Host `nextcloud-db`, DB Name/User `nextcloud`, Passwort aus `.env`), Admin Benutzer anlegen.
+- **MediaWiki** öffnen: http://localhost:8085  
+  Setup Wizard ausfüllen (Datenbank Host `mediawiki-db`, DB Name/User `mediawiki`, Passwort aus `.env`).  
+  Danach `LocalSettings.php` herunterladen und in den Container kopieren (siehe Abschnitt unten).
+
+---
+
+## Reset (alles neu initialisieren)
+
+Achtung: Das loescht alle persistenten Daten (Volumes). Nur verwenden, wenn du wirklich bei Null anfangen willst.
+
+```bash
+cd Abschlussprojekt/compose
+docker compose down -v
+```
+
+---
+
+
 ## Installation und Inbetriebnahme
 
 ### 1) Voraussetzungen
