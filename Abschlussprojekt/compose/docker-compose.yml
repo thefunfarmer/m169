@@ -14,6 +14,8 @@ services:
       - mediawiki_db:/var/lib/mysql
     networks:
       - backend
+    mem_limit: 768m
+    cpus: "1.00"
 
   mediawiki:
     image: mediawiki:latest
@@ -28,6 +30,8 @@ services:
     networks:
       - frontend
       - backend
+    mem_limit: 768m
+    cpus: "1.00"
 
   nextcloud-db:
     image: mariadb:10.11
@@ -43,6 +47,8 @@ services:
       - nextcloud_db:/var/lib/mysql
     networks:
       - backend
+    mem_limit: 1024m
+    cpus: "1.50"
 
   nextcloud-redis:
     image: redis:7-alpine
@@ -50,6 +56,8 @@ services:
     restart: unless-stopped
     networks:
       - backend
+    mem_limit: 256m
+    cpus: "0.50"
 
   nextcloud:
     image: nextcloud:apache
@@ -71,6 +79,8 @@ services:
     networks:
       - frontend
       - backend
+    mem_limit: 2048m
+    cpus: "2.00"
 
   nextcloud-cron:
     image: nextcloud:apache
@@ -83,6 +93,8 @@ services:
       - nextcloud_data:/var/www/html
     networks:
       - backend
+    mem_limit: 256m
+    cpus: "0.50"
 
   gitea-db:
     image: postgres:16-alpine
@@ -96,6 +108,8 @@ services:
       - gitea_db:/var/lib/postgresql/data
     networks:
       - backend
+    mem_limit: 768m
+    cpus: "1.00"
 
   gitea:
     image: gitea/gitea:latest
@@ -117,6 +131,8 @@ services:
     networks:
       - frontend
       - backend
+    mem_limit: 768m
+    cpus: "1.00"
 
   portainer:
     image: portainer/portainer-ce:latest
@@ -132,6 +148,8 @@ services:
       - portainer_data:/data
     networks:
       - frontend
+    mem_limit: 256m
+    cpus: "0.50"
 
 networks:
   frontend:
