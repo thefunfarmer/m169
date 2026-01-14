@@ -1,0 +1,27 @@
+name: m169-abschlussprojekt
+
+services: {}
+
+networks:
+  frontend:
+    name: m169_frontend
+  backend:
+    name: m169_backend
+    internal: true
+
+volumes:
+  # Portainer
+  portainer_data:
+
+  # Gitea ("Gitty")
+  gitea_data:
+  gitea_db:
+
+  # Nextcloud
+  nextcloud_data:
+  nextcloud_db:
+  nextcloud_redis:
+
+  # MediaWiki
+  mediawiki_data:
+  mediawiki_db:
