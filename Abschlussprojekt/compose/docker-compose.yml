@@ -1,6 +1,34 @@
 name: m169-abschlussprojekt
 
 services:
+  mediawiki-db:
+    image: mariadb:10.11
+    container_name: m169-mediawiki-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: mediawiki
+      MYSQL_USER: mediawiki
+      MYSQL_PASSWORD: ${MEDIAWIKI_DB_PASSWORD:?Set MEDIAWIKI_DB_PASSWORD in compose/.env}
+      MYSQL_RANDOM_ROOT_PASSWORD: "yes"
+    volumes:
+      - mediawiki_db:/var/lib/mysql
+    networks:
+      - backend
+
+  mediawiki:
+    image: mediawiki:latest
+    container_name: m169-mediawiki
+    restart: unless-stopped
+    depends_on:
+      - mediawiki-db
+    ports:
+      - "${MEDIAWIKI_PORT:-8085}:80"
+    volumes:
+      - mediawiki_data:/var/www/html
+    networks:
+      - frontend
+      - backend
+
   nextcloud-db:
     image: mariadb:10.11
     container_name: m169-nextcloud-db
@@ -55,7 +83,6 @@ services:
       - nextcloud_data:/var/www/html
     networks:
       - backend
-
 
   gitea-db:
     image: postgres:16-alpine
