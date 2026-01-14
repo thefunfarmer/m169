@@ -1,6 +1,20 @@
 name: m169-abschlussprojekt
 
-services: {}
+services:
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: m169-portainer
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    ports:
+      - "${PORTAINER_HTTPS_PORT:-9443}:9443"
+      - "${PORTAINER_HTTP_PORT:-9000}:9000"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - portainer_data:/data
+    networks:
+      - frontend
 
 networks:
   frontend:
