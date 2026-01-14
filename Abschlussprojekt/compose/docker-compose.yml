@@ -1,6 +1,62 @@
 name: m169-abschlussprojekt
 
 services:
+  nextcloud-db:
+    image: mariadb:10.11
+    container_name: m169-nextcloud-db
+    restart: unless-stopped
+    command: --transaction-isolation=READ-COMMITTED --binlog-format=ROW
+    environment:
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD:?Set NEXTCLOUD_DB_PASSWORD in compose/.env}
+      MYSQL_ROOT_PASSWORD: ${NEXTCLOUD_DB_ROOT_PASSWORD:?Set NEXTCLOUD_DB_ROOT_PASSWORD in compose/.env}
+    volumes:
+      - nextcloud_db:/var/lib/mysql
+    networks:
+      - backend
+
+  nextcloud-redis:
+    image: redis:7-alpine
+    container_name: m169-nextcloud-redis
+    restart: unless-stopped
+    networks:
+      - backend
+
+  nextcloud:
+    image: nextcloud:apache
+    container_name: m169-nextcloud
+    restart: unless-stopped
+    depends_on:
+      - nextcloud-db
+      - nextcloud-redis
+    ports:
+      - "${NEXTCLOUD_PORT:-8080}:80"
+    environment:
+      MYSQL_HOST: nextcloud-db
+      MYSQL_DATABASE: nextcloud
+      MYSQL_USER: nextcloud
+      MYSQL_PASSWORD: ${NEXTCLOUD_DB_PASSWORD:?Set NEXTCLOUD_DB_PASSWORD in compose/.env}
+      REDIS_HOST: nextcloud-redis
+    volumes:
+      - nextcloud_data:/var/www/html
+    networks:
+      - frontend
+      - backend
+
+  nextcloud-cron:
+    image: nextcloud:apache
+    container_name: m169-nextcloud-cron
+    restart: unless-stopped
+    depends_on:
+      - nextcloud
+    entrypoint: /cron.sh
+    volumes:
+      - nextcloud_data:/var/www/html
+    networks:
+      - backend
+
+
   gitea-db:
     image: postgres:16-alpine
     container_name: m169-gitea-db
