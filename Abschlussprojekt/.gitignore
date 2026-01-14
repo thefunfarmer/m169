@@ -1,0 +1,11 @@
+# Env Files
+compose/.env
+
+# Daten persistent, /data Ordner soll ins repo, aber ohne Inhalt
+data/*
+!data/.gitkeep
+
+# Logs und Temporäres
+*.log
+*.tmp
+.DS_Store
