@@ -169,7 +169,6 @@ volumes:
   # Nextcloud
   nextcloud_data:
   nextcloud_db:
-  nextcloud_redis:
 
   # MediaWiki
   mediawiki_data:
