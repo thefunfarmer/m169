@@ -15,10 +15,11 @@ services:
     networks:
       - backend
     mem_limit: 768m
+    memswap_limit: 768m
     cpus: "1.00"
 
   mediawiki:
-    image: mediawiki:latest
+    image: mediawiki:1.45.1
     container_name: m169-mediawiki
     restart: unless-stopped
     depends_on:
@@ -31,6 +32,7 @@ services:
       - frontend
       - backend
     mem_limit: 768m
+    memswap_limit: 768m
     cpus: "1.00"
 
   nextcloud-db:
@@ -48,6 +50,7 @@ services:
     networks:
       - backend
     mem_limit: 1024m
+    memswap_limit: 1024m
     cpus: "1.50"
 
   nextcloud-redis:
@@ -57,10 +60,11 @@ services:
     networks:
       - backend
     mem_limit: 256m
+    memswap_limit: 256m
     cpus: "0.50"
 
   nextcloud:
-    image: nextcloud:apache
+    image: nextcloud:32.0.4
     container_name: m169-nextcloud
     restart: unless-stopped
     depends_on:
@@ -80,10 +84,11 @@ services:
       - frontend
       - backend
     mem_limit: 2048m
+    memswap_limit: 2048m
     cpus: "2.00"
 
   nextcloud-cron:
-    image: nextcloud:apache
+    image: nextcloud:32.0.4
     container_name: m169-nextcloud-cron
     restart: unless-stopped
     depends_on:
@@ -94,6 +99,7 @@ services:
     networks:
       - backend
     mem_limit: 256m
+    memswap_limit: 256m
     cpus: "0.50"
 
   gitea-db:
@@ -109,10 +115,11 @@ services:
     networks:
       - backend
     mem_limit: 768m
+    memswap_limit: 768m
     cpus: "1.00"
 
   gitea:
-    image: gitea/gitea:latest
+    image: gitea/gitea:1.25.3
     container_name: m169-gitea
     restart: unless-stopped
     depends_on:
@@ -132,10 +139,11 @@ services:
       - frontend
       - backend
     mem_limit: 768m
+    memswap_limit: 768m
     cpus: "1.00"
 
   portainer:
-    image: portainer/portainer-ce:latest
+    image: portainer/portainer-ce:2.33.6-alpine
     container_name: m169-portainer
     restart: unless-stopped
     security_opt:
@@ -149,6 +157,7 @@ services:
     networks:
       - frontend
     mem_limit: 256m
+    memswap_limit: 256m
     cpus: "0.50"
 
 networks:
