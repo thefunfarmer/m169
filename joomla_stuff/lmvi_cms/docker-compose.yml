@@ -1,3 +1,8 @@
+#Bauplan der Joomla-Website
+#Andere Ports als beim Hauptprojekt
+
+
+#Datenbank => das Gedächnis mit MySQL Version 8 
 services:
   lmvidb:
     image: mysql:8.0
@@ -13,6 +18,7 @@ services:
     networks:
       - lmvi_cms_net
 
+# PHPMYADMIN ist das Tool zum direkt in die Datenbank reinschauen
   phpmyadmin:
     image: phpmyadmin:latest
     container_name: lmvi-phpmyadmin
@@ -24,11 +30,14 @@ services:
       PMA_PORT: ${PMA_PORT}
       PMA_USER: ${PMA_USER}
       PMA_PASSWORD: ${PMA_PASSWORD}
+# wir nehmen den port 8082, weil ja der 8080 schon belegt ist
+# erreichbar unter http://localhost:8082      
     ports:
       - "8082:80"
     networks:
       - lmvi_cms_net
 
+# die Website
   joomla:
     image: joomla:latest
     container_name: lmvi-joomla
@@ -45,6 +54,7 @@ services:
     networks:
       - lmvi_cms_net
 
+# Speicher und Netzwerk
 volumes:
   lmvidb_data:
 
