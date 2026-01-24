@@ -1,6 +1,12 @@
+# 1. MediaWiki: Ein eigenes Wiki (wie Wikipedia).
+# 2. Nextcloud: Ein eigener Cloud-Speicher (wie Dropbox/Google Drive).
+# 3. Gitea: Eine Code-Verwaltung (wie GitHub, aber privat).
+# 4. Portainer: Ein Werkzeug, um all diese Container grafisch zu verwalten.
+
 name: m169-abschlussprojekt
 
 services:
+  # Die Datenbank für das Wiki
   mediawiki-db:
     image: mariadb:10.11
     container_name: m169-mediawiki-db
@@ -18,6 +24,8 @@ services:
     memswap_limit: 768m
     cpus: "1.00"
 
+#Wiki-Webseite
+
   mediawiki:
     image: mediawiki:1.45.1
     container_name: m169-mediawiki
@@ -34,6 +42,8 @@ services:
     mem_limit: 768m
     memswap_limit: 768m
     cpus: "1.00"
+
+# Die Datenbank für die Cloud
 
   nextcloud-db:
     image: mariadb:10.11
@@ -53,6 +63,7 @@ services:
     memswap_limit: 1024m
     cpus: "1.50"
 
+# Zwischenspeicher/Cache für die Cloud
   nextcloud-redis:
     image: redis:7-alpine
     container_name: m169-nextcloud-redis
@@ -62,6 +73,8 @@ services:
     mem_limit: 256m
     memswap_limit: 256m
     cpus: "0.50"
+
+#Die Cloud Webseite
 
   nextcloud:
     image: nextcloud:32.0.4
@@ -87,6 +100,8 @@ services:
     memswap_limit: 2048m
     cpus: "2.00"
 
+# läuft im Hintergrund und räumt auf Cronjobs
+
   nextcloud-cron:
     image: nextcloud:32.0.4
     container_name: m169-nextcloud-cron
@@ -102,6 +117,7 @@ services:
     memswap_limit: 256m
     cpus: "0.50"
 
+# Die Datenbank für Gitea
   gitea-db:
     image: postgres:16-alpine
     container_name: m169-gitea-db
@@ -117,6 +133,8 @@ services:
     mem_limit: 768m
     memswap_limit: 768m
     cpus: "1.00"
+
+# Das Code-Verwaltungs-Programm
 
   gitea:
     image: gitea/gitea:1.25.3
@@ -142,6 +160,8 @@ services:
     memswap_limit: 768m
     cpus: "1.00"
 
+# grafisches Menü, um Docker zu steuern
+
   portainer:
     image: portainer/portainer-ce:2.33.6-alpine
     container_name: m169-portainer
@@ -160,6 +180,7 @@ services:
     memswap_limit: 256m
     cpus: "0.50"
 
+# Infrastruktur => Netzwerk und Speicher
 networks:
   frontend:
     name: m169_frontend
@@ -168,6 +189,9 @@ networks:
     internal: true
 
 volumes:
+# Festplatten definieren damit Daten Dauerhaft bleiben.
+# Auch wenn du den Container löschst, bleibt der Inhalt dieser Volumes da.
+
   # Portainer
   portainer_data:
 
